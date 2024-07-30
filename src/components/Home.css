@@ -1,0 +1,76 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+.container1 {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .image {
+    width: 100%;
+    height:500px;
+    object-fit: fill;
+    margin-bottom: 20px;
+  }
+  
+  .button {
+    background-color: #020202;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #3e8e41;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  
+  .left {
+    width: 30%;
+  }
+  
+  .right {
+    width: 70%;
+    padding: 20px;
+  }
+  
+  .image-left {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .links {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  .left-links, .right-links {
+    text-align: left; /* Changed from center to left */
+  }
+  
+  .left-links ul, .right-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .left-links li, .right-links li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .left-links li::before, .right-links li::before {
+    content: "\2022"; /* Bullet point */
+    display: inline-block;
+    width: 1em; /* Width to create space between bullet and text */
+    margin-right: 10px; /* Space between bullet and text */
+  }
+  
