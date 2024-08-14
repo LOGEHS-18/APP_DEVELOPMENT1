@@ -3,9 +3,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
 
-const Navbar = () => {
+const HNavbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -19,19 +20,19 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link" to="/home">Home</Link>
+              <Link className="nav-link" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/order">Orders</Link>
+              <Link className="nav-link" to="/orderPage">Orders</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/products">Products</Link>
             </li>
           </ul>
           <div className="d-flex align-items-center">
-            <Link to="/cart" className="btn btn-outline-secondary me-2">
-              <FaShoppingCart size={20} />
-            </Link>
+          <Link to="/cart" className="me-3">
+            <FaShoppingCart size={30} />
+          </Link>
             <DropdownButton
               align="end"
               title={<FaUserCircle size={30} />}
@@ -39,10 +40,9 @@ const Navbar = () => {
               variant="outline-secondary"
             >
               <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/orders">Orders</Dropdown.Item>
-              <Dropdown.Item as={Link} to="/settings">Settings</Dropdown.Item>
+              <Dropdown.Item as={Link} to="/">Dashboard</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item href="/">Logout</Dropdown.Item>
+              <Dropdown.Item href="/">LogOut</Dropdown.Item>
             </DropdownButton>
           </div>
         </div>
@@ -51,4 +51,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default HNavbar;

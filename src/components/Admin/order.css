@@ -1,0 +1,19 @@
+/* src/OrdersTable.css */
+
+.table img {
+    border-radius: 4px;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.table td {
+    max-width: 200px;
+}
+
+.total-users {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }

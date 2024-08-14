@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
 
 function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -10,25 +12,41 @@ function AdminLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await fetch(`http://localhost:5000/admin?email=${email}&password=${password}`);
-      const data = await response.json();
-      if (data.length > 0) {
-        navigate('/Dashboard');
-        alert("Login successful, Thank you");
+      const response = await fetch('http://127.0.0.1:8000/api/admins/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const admins = await response.json();
+        const admin = admins.find(admin => admin.email === email && admin.password === password);
+
+        if (admin) {
+          console.log('Login successful, admin:', admin);  // Log the successful response data
+          localStorage.setItem('accessToken', 'your-jwt-token');  // Store JWT token in localStorage
+          toast.success('Login successful');
+          navigate('/Dashboard');
+        } else {
+          console.log('Invalid email or password');
+          toast.error('Invalid email or password');
+        }
       } else {
-        alert('Invalid email or password');
+        console.log('Error fetching admin data');
+        toast.error('Login failed');
       }
     } catch (error) {
       console.error('Error during login:', error);
+      toast.error('An error occurred during login');
     }
   };
 
   return (
     <div className="container-fluid vh-100">
       <div className="row h-100">
-        {/* <div className="col-md-6 d-none d-md-flex align-items-center justify-content-center" style={{ background: 'url("https://img.freepik.com/premium-photo/children-toys-background_996086-8899.jpg") no-repeat center center', backgroundSize: 'cover' }}>
-        </div> */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="card p-4" style={{ width: '80%' }}>
             <h2 className="text-center">ADMIN Login</h2>

@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from './Navbar';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({ name: '', category: '', company: '', price: '' });
+  const [editProduct, setEditProduct] = useState(null);
   const [categories, setCategories] = useState([
-    'Action Figures',
-    'Building Toys',
-    'Educational Toys',
-    'Dolls and Stuffed Animals',
-    'Games and Puzzles',
-    'Outdoor Toys',
-    'Pretend Play Toys',
-    'Creative and Art Toys',
-    'Electronic Toys',
+    'Action-Figures',
+    'Building-Toys',
+    'Educational-Toys',
+    'Dolls-and-Stuffed-Animals',
+    'Games-and-Puzzles',
+    'Outdoor-Toys',
+    'Pretend-Play-Toys',
+    'Creative-and-Art-Toys',
+    'Electronic-Toys'
   ]);
   const [selectedCategory, setSelectedCategory] = useState('Action Figures');
 
   useEffect(() => {
-    // Fetch products based on the selected category
-    axios.get(`http://localhost:5000/${selectedCategory}`)
+    axios.get(`http://127.0.0.1:8000/api/${selectedCategory}/`)
       .then(response => setProducts(response.data))
       .catch(error => console.error('Error fetching products:', error));
   }, [selectedCategory]);
@@ -33,6 +34,24 @@ const ProductsPage = () => {
       .catch(error => console.error('Error adding product:', error));
   };
 
+  const handleEditProduct = (product) => {
+    setEditProduct(product);
+    setNewProduct({ name: product.name, category: product.category, company: product.company, price: product.price });
+  };
+
+  const handleSaveEdit = () => {
+    axios.put(`http://localhost:5000/${selectedCategory}/${editProduct.id}`, newProduct)
+      .then(response => {
+        const updatedProducts = products.map(product =>
+          product.id === editProduct.id ? response.data : product
+        );
+        setProducts(updatedProducts);
+        setEditProduct(null);
+        setNewProduct({ name: '', category: '', company: '', price: '' });
+      })
+      .catch(error => console.error('Error updating product:', error));
+  };
+
   const handleDeleteProduct = (id) => {
     axios.delete(`http://localhost:5000/${selectedCategory}/${id}`)
       .then(() => {
@@ -43,6 +62,7 @@ const ProductsPage = () => {
 
   return (
     <div>
+      <Navbar />
       <h2>Products</h2>
 
       <div className="mb-3">
@@ -79,7 +99,11 @@ const ProductsPage = () => {
           value={newProduct.price}
           onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
         />
-        <button onClick={handleAddProduct} className="btn btn-primary">Add Product</button>
+        {editProduct ? (
+          <button onClick={handleSaveEdit} className="btn btn-success">Save Edit</button>
+        ) : (
+          <button onClick={handleAddProduct} className="btn btn-primary">Add Product</button>
+        )}
       </div>
 
       <table className="table">
@@ -102,6 +126,7 @@ const ProductsPage = () => {
               <td>{product.company}</td>
               <td>{product.price}</td>
               <td>
+                <button onClick={() => handleEditProduct(product)} className="btn btn-warning">Edit</button>
                 <button onClick={() => handleDeleteProduct(product.id)} className="btn btn-danger">Delete</button>
               </td>
             </tr>

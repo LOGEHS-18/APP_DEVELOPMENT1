@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,24 +11,48 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await fetch(`http://localhost:5000/users?email=${email}&password=${password}`);
-      const data = await response.json();
-      if (data.length > 0) {
-        navigate('/home');
-        alert("Login successful, Thank you");
+      const response = await fetch('http://127.0.0.1:8000/api/users/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const users = await response.json();
+        const user = users.find(user => user.email === email && user.password === password);
+
+        if (user) {
+          console.log('Login successful, user:', user); 
+          toast.success('Login successful');
+          navigate('/home');
+        } else {
+          console.log('Invalid email or password');
+          toast.error('Invalid email or password');
+        }
       } else {
-        alert('Invalid email or password');
+        console.log('Error fetching user data');
+        toast.error('Login failed');
       }
     } catch (error) {
       console.error('Error during login:', error);
+      toast.error('An error occurred during login');
     }
   };
 
   return (
     <div className="container-fluid vh-100">
+      <ToastContainer/>
       <div className="row h-100">
-        <div className="col-md-6 d-none d-md-flex align-items-center justify-content-center" style={{ background: 'url("https://img.freepik.com/premium-photo/children-toys-background_996086-8899.jpg") no-repeat center center', backgroundSize: 'cover' }}>
+        <div 
+          className="col-md-6 d-none d-md-flex align-items-center justify-content-center" 
+          style={{ 
+            background: 'url("https://img.freepik.com/premium-photo/children-toys-background_996086-8899.jpg") no-repeat center center', 
+            backgroundSize: 'cover' 
+          }}
+        >
         </div>
         <div className="col-md-6 d-flex align-items-center justify-content-center">
           <div className="card p-4" style={{ width: '80%' }}>

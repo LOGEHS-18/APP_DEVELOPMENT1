@@ -7,6 +7,7 @@ const ThemeToggle = () => {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
 
+
   const toggleTheme = () => {
     dispatch(setTheme(theme === 'light' ? 'dark' : 'light'));
   };
